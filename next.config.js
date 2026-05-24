@@ -8,7 +8,7 @@ const nextConfig = {
   },
 
   reactStrictMode: false,
-  swcMinify: true,
+  swcMinify: false,
 
   images: {
     unoptimized: true,
@@ -60,9 +60,6 @@ const nextConfig = {
       };
     }
 
-    // 禁用代码混淆，避免生成过大的文件
-    config.optimization.minimize = true;
-    
     return config;
   },
 };
