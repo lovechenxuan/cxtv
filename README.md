@@ -71,78 +71,24 @@
 
 本项目**支持 Docker、Zeabur 和 Cloudflare Pages** 部署。
 
-### Cloudflare Pages 部署（推荐）
+### Cloudflare Pages 部署（强烈推荐）
 
-Cloudflare Pages 提供免费托管，适合个人使用，配合 Upstash Redis 可以实现全球加速。
+Cloudflare Pages 提供免费托管，适合个人使用，**推荐使用 Cloudflare KV**（无需第三方服务，数据更持久）。
 
-#### 前置准备
+#### 方式一：Cloudflare KV（推荐，无需 Upstash）
 
-1. **注册 Cloudflare 账号**
-   - 访问 [Cloudflare](https://dash.cloudflare.com/) 注册账号
+这是最简单、最可靠的方式！完整部署步骤请阅读 [CLOUDFLARE_KV_DEPLOY.md](./CLOUDFLARE_KV_DEPLOY.md)。
 
-2. **创建 Upstash Redis 数据库**
-   - 访问 [Upstash](https://upstash.com/) 注册并创建 Redis 数据库
-   - 选择 **Global** 类型以获得最佳全球性能
-   - 复制 **HTTPS URL** 和 **REST Token**
+**快速开始**：
+1. 在 Cloudflare 中创建 KV 命名空间（命名为 `LUNATV_KV`）
+2. 在 Cloudflare Pages 中连接你的 GitHub 仓库
+3. 配置环境变量：`USERNAME`、`PASSWORD`、`NEXT_PUBLIC_STORAGE_TYPE=cloudflare-kv`
+4. 在 Pages 项目设置中绑定 KV 命名空间
+5. 完成！
 
-3. **获取 Cloudflare API Token**
-   - 访问 [Cloudflare API Tokens](https://dash.cloudflare.com/profile/api-tokens)
-   - 点击 "Create Token"
-   - 选择 "Custom token" -> "Get started"
-   - 配置权限：
-     - **Account** -> **Cloudflare Pages** -> Edit
-   - 创建并保存 Token
+#### 方式二：Upstash Redis（如果需要）
 
-#### 部署步骤
-
-**方法一：GitHub Actions 自动部署（推荐）**
-
-1. Fork 本项目到你的 GitHub 仓库
-
-2. 在 GitHub 仓库的 **Settings** -> **Secrets and variables** -> **Actions** 中添加以下 Secrets：
-   ```
-   CLOUDFLARE_API_TOKEN: 你的 Cloudflare API Token
-   CLOUDFLARE_ACCOUNT_ID: 你的 Cloudflare Account ID（在 Cloudflare 概览页面查看）
-   UPSTASH_URL: Upstash Redis 的 HTTPS URL
-   UPSTASH_TOKEN: Upstash Redis 的 REST Token
-   USERNAME: 管理员用户名（至少6位）
-   PASSWORD: 管理员密码（至少6位）
-   ```
-
-3. 可选，在 **Settings** -> **Variables** -> **Actions** 中添加：
-   ```
-   NEXT_PUBLIC_SITE_NAME: 站点名称（默认 LunaTV）
-   NEXT_PUBLIC_ALLOW_REGISTRATION: true（是否允许用户注册，默认 true）
-   NEXT_PUBLIC_DOUBAN_PROXY_TYPE: cmliussss-cdn-tencent（豆瓣代理类型）
-   ```
-
-4. 推送代码到 main 分支，GitHub Actions 会自动部署
-
-**方法二：手动部署**
-
-1. 安装 Wrangler CLI：
-   ```bash
-   npm install -g wrangler
-   ```
-
-2. 克隆并安装依赖：
-   ```bash
-   git clone https://github.com/你的用户名/LunaTV.git
-   cd LunaTV
-   pnpm install
-   ```
-
-3. 创建 `.env` 文件并配置环境变量（参考 `.env.cloudflare.example`）
-
-4. 构建项目：
-   ```bash
-   pnpm build
-   ```
-
-5. 使用 Wrangler 部署：
-   ```bash
-   wrangler pages deploy .next
-   ```
+如果你想继续使用 Upstash，请参考 [CLOUDFLARE_DEPLOY.md](./CLOUDFLARE_DEPLOY.md)。
 
 #### 环境变量说明
 
@@ -150,9 +96,9 @@ Cloudflare Pages 提供免费托管，适合个人使用，配合 Upstash Redis 
 |------|------|------|--------|
 | USERNAME | 管理员账号 | 是 | - |
 | PASSWORD | 管理员密码 | 是 | - |
-| NEXT_PUBLIC_STORAGE_TYPE | 存储类型 | 是 | upstash |
-| UPSTASH_URL | Upstash Redis URL | 是 | - |
-| UPSTASH_TOKEN | Upstash Redis Token | 是 | - |
+| NEXT_PUBLIC_STORAGE_TYPE | 存储类型 | 是 | cloudflare-kv |
+| UPSTASH_URL | Upstash Redis URL（仅使用 upstash 时） | 否 | - |
+| UPSTASH_TOKEN | Upstash Redis Token（仅使用 upstash 时） | 否 | - |
 | NEXT_PUBLIC_SITE_NAME | 站点名称 | 否 | LunaTV |
 | NEXT_PUBLIC_ALLOW_REGISTRATION | 是否允许注册 | 否 | true |
 | NEXT_PUBLIC_DOUBAN_PROXY_TYPE | 豆瓣代理类型 | 否 | cmliussss-cdn-tencent |
