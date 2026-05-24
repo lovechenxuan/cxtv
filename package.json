@@ -15,7 +15,7 @@
     "format": "prettier -w .",
     "format:check": "prettier -c .",
     "gen:manifest": "node scripts/generate-manifest.js",
-    "postbuild": "echo 'Build completed - sitemap generation disabled'",
+    "postbuild": "echo 'Build completed' && rm -rf .next/cache 2>/dev/null || true",
     "prepare": "husky install"
   },
   "dependencies": {
