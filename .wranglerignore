@@ -1,6 +1,13 @@
-# 忽略缓存文件
+# 忽略缓存和构建文件
 .cache/
-cache/
 .next/cache/
+.next/server/
+.next/static/
+.next/BUILD_ID
+.next/required-server-files.json
+.next/routes-manifest.json
+.next/serverless/
+.next/image-optimize/
+.next/react-loadable-manifest.json
 node_modules/
 .git/
