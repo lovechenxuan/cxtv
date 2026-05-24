@@ -1,0 +1,19 @@
+name = "lunatv"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = ".next"
+
+[vars]
+NEXT_PUBLIC_SITE_NAME = "LunaTV"
+
+[environment.production]
+name = "lunatv"
+
+[environment.production.vars]
+NEXT_PUBLIC_STORAGE_TYPE = "upstash"
+
+[environment.staging]
+name = "lunatv-staging"
+
+[environment.staging.vars]
+NEXT_PUBLIC_STORAGE_TYPE = "upstash"
+NEXT_PUBLIC_ALLOW_REGISTRATION = "true"
