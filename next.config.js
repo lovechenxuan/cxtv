@@ -2,18 +2,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const nextConfig = {
-  output: 'standalone',
   eslint: {
     dirs: ['src'],
     ignoreDuringBuilds: true,
   },
 
   reactStrictMode: false,
-  swcMinify: false,
-
-  experimental: {
-    instrumentationHook: process.env.NODE_ENV === 'production',
-  },
+  swcMinify: true,
 
   images: {
     unoptimized: true,
@@ -65,15 +60,11 @@ const nextConfig = {
       };
     }
 
+    // 禁用代码混淆，避免生成过大的文件
+    config.optimization.minimize = true;
+    
     return config;
   },
 };
 
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  disable: process.env.NODE_ENV === 'development',
-  register: true,
-  skipWaiting: true,
-});
-
-module.exports = withPWA(nextConfig);
+module.exports = nextConfig;
