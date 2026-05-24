@@ -2,12 +2,12 @@
 
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-import { CURRENT_VERSION } from '@/lib/version';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import { useSite } from '@/components/SiteProvider';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { CURRENT_VERSION } from '@/lib/version';
 
 export default function RegisterPage() {
   const router = useRouter();

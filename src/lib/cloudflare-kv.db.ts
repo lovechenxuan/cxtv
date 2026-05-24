@@ -34,7 +34,7 @@ export class CloudflareKVStorage implements IStorage {
     key: string,
     record: PlayRecord
   ): Promise<void> {
-    let allRecords = await this.kv.get(this.prKey(userName), { type: 'json' }) || {};
+    const allRecords = await this.kv.get(this.prKey(userName), { type: 'json' }) || {};
     allRecords[key] = record;
     await this.kv.put(this.prKey(userName), JSON.stringify(allRecords));
   }
@@ -47,7 +47,7 @@ export class CloudflareKVStorage implements IStorage {
   }
 
   async deletePlayRecord(userName: string, key: string): Promise<void> {
-    let allRecords = await this.kv.get(this.prKey(userName), { type: 'json' }) || {};
+    const allRecords = await this.kv.get(this.prKey(userName), { type: 'json' }) || {};
     delete allRecords[key];
     await this.kv.put(this.prKey(userName), JSON.stringify(allRecords));
   }
@@ -71,7 +71,7 @@ export class CloudflareKVStorage implements IStorage {
     key: string,
     favorite: Favorite
   ): Promise<void> {
-    let allFavorites = await this.kv.get(this.favKey(userName), { type: 'json' }) || {};
+    const allFavorites = await this.kv.get(this.favKey(userName), { type: 'json' }) || {};
     allFavorites[key] = favorite;
     await this.kv.put(this.favKey(userName), JSON.stringify(allFavorites));
   }
@@ -82,7 +82,7 @@ export class CloudflareKVStorage implements IStorage {
   }
 
   async deleteFavorite(userName: string, key: string): Promise<void> {
-    let allFavorites = await this.kv.get(this.favKey(userName), { type: 'json' }) || {};
+    const allFavorites = await this.kv.get(this.favKey(userName), { type: 'json' }) || {};
     delete allFavorites[key];
     await this.kv.put(this.favKey(userName), JSON.stringify(allFavorites));
   }
@@ -187,7 +187,7 @@ export class CloudflareKVStorage implements IStorage {
   }
 
   private async addUserToSet(userName: string): Promise<void> {
-    let users = await this.kv.get(this.usersKey(), { type: 'json' }) || [];
+    const users = await this.kv.get(this.usersKey(), { type: 'json' }) || [];
     if (!users.includes(userName)) {
       users.push(userName);
       await this.kv.put(this.usersKey(), JSON.stringify(users));
@@ -244,7 +244,7 @@ export class CloudflareKVStorage implements IStorage {
     id: string,
     config: SkipConfig
   ): Promise<void> {
-    let allConfigs = await this.kv.get(this.skipKey(userName), { type: 'json' }) || {};
+    const allConfigs = await this.kv.get(this.skipKey(userName), { type: 'json' }) || {};
     const field = this.skipField(source, id);
     allConfigs[field] = config;
     await this.kv.put(this.skipKey(userName), JSON.stringify(allConfigs));
@@ -255,7 +255,7 @@ export class CloudflareKVStorage implements IStorage {
     source: string,
     id: string
   ): Promise<void> {
-    let allConfigs = await this.kv.get(this.skipKey(userName), { type: 'json' }) || {};
+    const allConfigs = await this.kv.get(this.skipKey(userName), { type: 'json' }) || {};
     const field = this.skipField(source, id);
     delete allConfigs[field];
     await this.kv.put(this.skipKey(userName), JSON.stringify(allConfigs));
@@ -320,10 +320,10 @@ function getMockKV() {
   const storage: Map<string, string> = new Map();
 
   return {
-    async get(key: string, options?: any) {
+    async get(key: string, _options?: any) {
       const value = storage.get(key);
       if (!value) return null;
-      if (options?.type === 'json') {
+      if (_options?.type === 'json') {
         try {
           return JSON.parse(value);
         } catch {
@@ -338,7 +338,7 @@ function getMockKV() {
     async delete(key: string) {
       storage.delete(key);
     },
-    async list(options?: any) {
+    async list(_options?: any) {
       const keys = Array.from(storage.keys());
       return { keys: keys.map((name) => ({ name })) };
     }
